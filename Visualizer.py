@@ -24,6 +24,10 @@ for c in data:
             current_text = ""
             counter = counter + 1
         else if counter == 2:
+            az_array.append(float(current_text))
+            current_text = ""
+            counter = counter + 1
+        else if counter == 3:
             prob_dens.append(float(current_text)) # CAUSES COULD NOT CONVERT STRING TO FLOAT
             current_text = ""
             counter = 0
@@ -51,21 +55,11 @@ def sph_to_cart(p, the, phi):
     result = vector(ansx,ansy,ansz) # Result is vector in x,y,z
     return result
 
-def visualize_sphere(in_p, in_prob): # Pretty meh right now
+def visualize_sphere(in_p, in_prob):
     for k in range(360):
-        for i in range(360):
-            for j,jval in enumerate(in_p):
-                electron = sphere(pos=sph_to_cart(in_p[j], pi*k/180, pi*k/180), radius = 0.5*10**-16, opacity = in_prob[i])
-            
-            
-# Older version of cylindrical visualizer
-'''
-def visualize_cylinder(in_p, in_th, in_prob): # Visualization for cylindrically symmetric orbitals with prob_dens input
-    for k in range(360): # Basically ends up rotating the pattern, probability density is cylindrically symmetric
-        for i, ival in enumerate(in_th): # For loop for array of theta angles
-            for j,jval in enumerate(in_p): # For loop for array of distances to the origin
-                electron = sphere(pos=sph_to_cart(in_p[j], in_th[i], pi*k/180), radius = 0.5*10**-16, opacity = in_prob[i])
-'''
+        for j in range(360):
+            for i,ival in enumerate(in_p):
+                electron = sphere(pos=sph_to_cart(in_p[i], pi*j/180, pi*k/180), radius = 0.5*10**-16, opacity = in_prob[i])
 
 # Visualization for cylindrically symmetric orbitals with prob_dens input. Assumes there is a value for p, th, and prob for each row in the csv table
 def visualize_cylinder(in_p, in_th, in_prob):
@@ -73,7 +67,9 @@ def visualize_cylinder(in_p, in_th, in_prob):
         for i, ival in enumerate(in_th): # For loop for array of theta angles
             electron = sphere(pos=sph_to_cart(in_p[i], in_th[i], pi*k/180), radius = 0.5*10**-16, opacity = in_prob[i])
 
-#def visualize_general(in_p, in_th, in_az):
+def visualize_general(in_p, in_th, in_az, in_prob):
+    for i, ival in enumerate(in_p): # Already assuming there are an equal number of inputs for p, th, az, and prob
+        electron = sphere(pos=sph_to_cart(in_p[i], in_th[i], in_az[i]), radius = 0.5*10**-16, opacity = in_prob[i])
 
-
-visualize_cylinder(p_array, th_array, prob_dens)
+visualize_sphere(p_array, prob_dens)
+#visualize_general(p_array, th_array, az_array, prob_dens)
